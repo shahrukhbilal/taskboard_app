@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Bell, Sun, Moon, Plus } from "lucide-react";
+import { Bell, Sun, Moon, Plus, Menu } from "lucide-react";
 import { toast } from "sonner";
 
-export default function Navbar() {
+export default function Navbar({toggleSidebar}) {
  const router = useRouter();
 
   const [darkMode, setDarkMode] = useState(false);
@@ -141,6 +141,13 @@ setEmployees(data.employees);
     <>
       {/* NAVBAR */}
       <nav className="flex items-center justify-between px-6 py-3 bg-white dark:bg-gray-900 shadow-md fixed top-0 w-full z-50 transition-colors duration-300">
+ <button
+          onClick={toggleSidebar}
+          className="lg:hidden text-gray-700 dark:text-gray-200 p-2 rounded-md mr-2"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+        
         {/* Left: Logo */}
         <div className="flex items-center space-x-2">
           <div className="relative w-8 h-8">
