@@ -8,7 +8,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-linear-to-br from-blue-200 via-purple-200 to-white text-gray-900">
 
       {/* ===================== NAVBAR ===================== */}
-      <nav className="flex justify-between items-center px-10 py-5">
+      <nav className="flex justify-between  items-center px-10 py-5">
         <motion.h1
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

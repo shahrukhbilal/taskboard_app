@@ -105,7 +105,7 @@ export default function AdminDashBoard() {
   ];
 
   return (
-    <div className="space-y-4 sm:space-y-6 mt-2 sm:mt-4 px-2 sm:px-0">
+    <div className="pt-10 space-y-4 sm:space-y-6 mt-2 sm:mt-4 px-2 sm:px-0">
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-gray-100">
