@@ -20,11 +20,24 @@ export default function RootLayout({ children }) {
 
   // Sidebar toggle state
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
-  // Auto-close sidebar when switching pages (mobile fix)
+  // Detect screen width
   useEffect(() => {
-    setIsSidebarOpen(false);
-  }, [pathname]);
+    const handleResize = () => {
+      const desktop = window.innerWidth >= 1024;
+      setIsDesktop(desktop);
+      setIsSidebarOpen(desktop); // open by default on desktop
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Auto-close sidebar on mobile when changing pages
+  useEffect(() => {
+    if (!isDesktop) setIsSidebarOpen(true);
+  }, [pathname, isDesktop]);
 
   return (
     <html lang="en">
@@ -52,23 +65,15 @@ export default function RootLayout({ children }) {
         {showAdminLayout && (
           <>
             <Navbar toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-
-            <Sidebar isOpen={isSidebarOpen} />
+            <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
           </>
         )}
 
         {/* MAIN CONTENT */}
         <main
-          className={
-            showAdminLayout
-              ? `
-                pt-16 
-                transition-all duration-300
-                ${isSidebarOpen ? "lg:pl-[250px]" : "lg:pl-[250px]"}
-                p-6
-              `
-              : "p-0"
-          }
+          className={`pt-16 transition-all duration-300 p-6 ${
+            showAdminLayout && isDesktop && isSidebarOpen ? "lg:pl-[250px]" : "lg:pl-0"
+          }`}
         >
           {children}
         </main>

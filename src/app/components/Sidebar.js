@@ -16,7 +16,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     { name: "Dashboard", icon: LayoutDashboard, path: "/" },
     { name: "Tasks", icon: ClipboardList, path: "/tasks" },
     { name: "Projects", icon: FolderKanban, path: "/projects" },
-    { name: "Calendar", icon: Calendar, path: "/calendar" },
+    { name: "Calendar", icon: Calendar, path: "/Calendar" },
     { name: "Team", icon: Users, path: "/team" },
     { name: "Settings", icon: Settings, path: "/settings" },
   ];
