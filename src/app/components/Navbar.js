@@ -193,14 +193,13 @@ setEmployees(data.employees);
           </button>
 
           {/* New Task Button */}
-          <button
-            onClick={() => setModalOpen(true)}
-            className="hidden md:flex items-center gap-2 bg-blue-600 text-white px-4 py-2
-            rounded-lg hover:bg-blue-700 transition"
-          >
-            <Plus className="w-4 h-4" /> New Task
-          </button>
-
+         <button
+  onClick={() => setModalOpen(true)}
+  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2
+  rounded-lg hover:bg-blue-700 transition"
+>
+  <Plus className="w-4 h-4" /> New Task
+</button>
           {/* Avatar */}
           <div className="relative profile-menu">
             <div
