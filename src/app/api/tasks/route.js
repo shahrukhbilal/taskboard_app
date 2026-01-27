@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Task from "@/model/Task";
 import mongoose from "mongoose";
+import User from '@/model/User'
 
 //Get route to get data from DB and send that data to frontend 
 export async function GET() {
@@ -9,7 +10,10 @@ export async function GET() {
     await dbConnect();
     // Task.find() retrieves all documents stored in the Task collection.
     // and .lean() function removes all unnessory functions from mongoose document and  converts the data into normal javaScript object 
-    const tasks = await Task.find().lean();
+    const tasks = await Task.find()
+  .populate("assignedTo", "name email")  // 👈 sirf name & email fetch hoga
+  .sort({ createdAt: -1 });
+
 
     // this block is used to count stats 
     const total = tasks.length;
@@ -61,29 +65,34 @@ export async function POST(req) {
 
     const data = await req.json(); // frontend se JSON data
 
-
-    const {title,
-        description,
-        priority,
-        assignedTo,
-        status,
-        due, } = data;
+    const { title, description, priority, assignedTo, status, due } = data;
 
     // Validate required fields
-   if (!title || !description || !priority || !assignedTo || !status || !due) {
-  return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-}
-// Convert assignedTo into ObjectId
+    if (!title || !description || !priority || !assignedTo || !status || !due) {
+      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    }
+
+    // Convert assignedTo into ObjectId
     const assignedToObjectId = new mongoose.Types.ObjectId(assignedTo);
 
+    // 🔹 Set completedAt if status === 'completed'
+    let completedAt = null;
+    if (status === "completed") {
+      completedAt = new Date();
+    }
+
     // Create new task in MongoDB
-    const task = await Task.create({title,
-        description,
-        priority,
-        assignedTo: assignedToObjectId,
-        status,
-        due, });
-    console.log(" Task Data:", task);
+    const task = await Task.create({
+      title,
+      description,
+      priority,
+      assignedTo: assignedToObjectId,
+      status,
+      due,
+      completedAt,
+    });
+
+    console.log("Task Data:", task);
     return NextResponse.json(task, { status: 201 });
 
   } catch (err) {

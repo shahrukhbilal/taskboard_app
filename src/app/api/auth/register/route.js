@@ -47,7 +47,7 @@ export async function POST(req) {
       techRole,
       password: hashedPassword,
     });
-    console.log('new user is :' , newUser)
+
 
     return NextResponse.json({
       message: "User registered successfully",

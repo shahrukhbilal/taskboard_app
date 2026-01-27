@@ -8,13 +8,26 @@ export async function PUT(req) {
 
     const { taskId, status } = await req.json();
 
-    const updated = await Task.findByIdAndUpdate(
-      taskId,
-      { status },
-      { new: true }
-    );
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return NextResponse.json(
+        { success: false, message: "Task not found" },
+        { status: 404 }
+      );
+    }
 
-    return NextResponse.json({ success: true, updated });
+    // 🔥 IMPORTANT LOGIC
+    if (status === "completed" && task.status !== "completed") {
+      task.status = "completed";
+      task.completedAt = new Date(); // auto date set
+    } else {
+      task.status = status;
+    }
+
+    await task.save();
+
+    return NextResponse.json({ success: true, updated: task });
+
   } catch (error) {
     return NextResponse.json(
       { success: false, message: error.message },
@@ -22,3 +35,4 @@ export async function PUT(req) {
     );
   }
 }
+

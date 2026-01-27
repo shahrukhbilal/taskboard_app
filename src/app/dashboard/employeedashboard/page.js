@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 
 export default function EmployeeDashboard() {
+  const router = useRouter();
+
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,6 +59,30 @@ export default function EmployeeDashboard() {
     }
   };
 
+  const handleLogout = async () => {
+      try {
+        // 1️⃣ Call logout API
+        const res = await fetch("/api/auth/logout", {
+          method: "POST",
+          credentials: "include", // ensures cookies are sent/deleted
+        });
+  
+        if (!res.ok) throw new Error("Logout API failed");
+  
+        // 2️⃣ Remove token from localStorage
+        // localStorage.removeItem("task_token");
+  
+        // 3️⃣ Show success message
+        toast.success("Logged out successfully!");
+  
+        // 4️⃣ Redirect to login page
+        router.push("/auth/login");
+      } catch (error) {
+        console.error(error);
+        toast.error("Logout failed");
+      }
+    };
+  
   const statusBadge = (status) => {
     if (status === "completed")
       return "bg-green-100 text-green-600 border border-green-200";
@@ -82,6 +110,15 @@ export default function EmployeeDashboard() {
       >
         My Tasks
       </motion.h1>
+      <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={() => router.push("/auth/login")}
+    className="px-4 mb-3 py-2 bg-gray-500 text-white font-semibold rounded-xl hover:bg-gray-600 transition-colors"
+  >
+    Logut
+  </motion.button>
+
 
       {/* Loading Skeleton */}
       {loading && (

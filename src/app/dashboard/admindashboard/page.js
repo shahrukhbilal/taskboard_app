@@ -28,6 +28,11 @@ export default function AdminDashBoard() {
   });
   const [weekly, setWeekly] = useState([]);
 
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(""); // "completed", "pending", "upcoming"
+  const [modalTasks, setModalTasks] = useState([]);
+
   useEffect(() => {
     const fetchUser = async () => {
       const res = await fetch("/api/auth/check", {
@@ -53,6 +58,7 @@ export default function AdminDashBoard() {
         if (!res.ok) throw new Error("Failed to fetch");
 
         const json = await res.json();
+        
         if (!mounted) return;
 
         setTasks(json.tasks || []);
@@ -80,6 +86,7 @@ export default function AdminDashBoard() {
       icon: ClipboardList,
       color: "text-blue-600",
       bg: "bg-blue-50 dark:bg-blue-900/30",
+      type: "all",
     },
     {
       title: "Completed Tasks",
@@ -87,6 +94,7 @@ export default function AdminDashBoard() {
       icon: CheckCircle,
       color: "text-green-600",
       bg: "bg-green-50 dark:bg-green-900/30",
+      type: "completed",
     },
     {
       title: "Pending Tasks",
@@ -94,6 +102,7 @@ export default function AdminDashBoard() {
       icon: Clock,
       color: "text-yellow-600",
       bg: "bg-yellow-50 dark:bg-yellow-900/30",
+      type: "pending",
     },
     {
       title: "Upcoming Deadlines",
@@ -101,8 +110,36 @@ export default function AdminDashBoard() {
       icon: CalendarDays,
       color: "text-red-600",
       bg: "bg-red-50 dark:bg-red-900/30",
+      type: "upcoming",
     },
   ];
+
+  // Card click → modal open + filtered tasks
+  const handleCardClick = (type) => {
+    let filtered = [];
+    const now = new Date();
+
+    if (type === "completed") {
+      filtered = tasks.filter((t) => t.status === "completed");
+    } else if (type === "pending") {
+      filtered = tasks.filter((t) => t.status !== "completed");
+    } else if (type === "upcoming") {
+      filtered = tasks.filter((t) => {
+        const due = new Date(t.due);
+        const diffDays = Math.ceil((due - now) / (1000 * 60 * 60 * 24));
+        return diffDays >= 0 && diffDays <= 7 && t.status !== "completed";
+      });
+    } else {
+      filtered = tasks;
+    }
+
+    setModalTasks(filtered);
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  // Modal close
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <div className="pt-10 space-y-4 sm:space-y-6 mt-2 sm:mt-4 px-2 sm:px-0">
@@ -133,15 +170,17 @@ export default function AdminDashBoard() {
         <>
           {/* Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {cards.map(({ title, value, icon: Icon, color, bg }, index) => (
+            {cards.map(({ title, value, icon: Icon, color, bg, type }, index) => (
               <motion.div
                 key={title}
+                onClick={() => handleCardClick(type)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.08, duration: 0.4 }}
                 whileHover={{
                   scale: 1.03,
                   boxShadow: "0 10px 20px rgba(0,0,0,0.10)",
+                  cursor: "pointer",
                 }}
                 className={`flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border border-gray-200 dark:border-gray-800 ${bg}`}
               >
@@ -213,7 +252,9 @@ export default function AdminDashBoard() {
                           <p className="text-sm text-gray-700 dark:text-gray-200">
                             {t.title}
                           </p>
-                          <p className="text-xs text-red-700">Due: {t.due}</p>
+                          <p className="text-xs text-red-700">
+                            Due: {new Date(t.due).toLocaleDateString()}
+                          </p>
                         </div>
                       </div>
                     ))
@@ -289,7 +330,7 @@ export default function AdminDashBoard() {
                         <td className="px-2 py-2 sm:px-4 sm:py-3 text-sm">
                           <span
                             className={`px-2 py-1 rounded-full text-xs ${
-                              t.status === "done"
+                              t.status === "completed"
                                 ? "bg-green-100 text-green-700"
                                 : t.status === "in-progress"
                                 ? "bg-yellow-100 text-yellow-700"
@@ -300,7 +341,7 @@ export default function AdminDashBoard() {
                           </span>
                         </td>
                         <td className="px-2 py-2 sm:px-4 sm:py-3 text-sm">
-                          {t.due}
+                          {new Date(t.due).toLocaleDateString()}
                         </td>
                       </tr>
                     ))}
@@ -309,6 +350,70 @@ export default function AdminDashBoard() {
               </div>
             )}
           </div>
+
+          {/* Modal */}
+          {isModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+              <div className="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                <h2 className="text-lg sm:text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100 capitalize">
+                  {modalType} Tasks
+                </h2>
+
+                {modalTasks.length === 0 ? (
+                  <p className="text-gray-500 dark:text-gray-400 text-sm">
+                    No tasks found.
+                  </p>
+                ) : (
+                  <table className="min-w-full text-left border border-gray-200 dark:border-gray-800">
+                    <thead>
+                      <tr>
+                        <th className="px-2 py-2 text-xs sm:text-sm text-gray-500">
+                          Title
+                        </th>
+                        <th className="px-2 py-2 text-xs sm:text-sm text-gray-500">
+                          Status
+                        </th>
+                        <th className="px-2 py-2 text-xs sm:text-sm text-gray-500">
+                          Assigned To
+                        </th>
+                        <th className="px-2 py-2 text-xs sm:text-sm text-gray-500">
+                          Due
+                        </th>
+                        <th className="px-2 py-2 text-xs sm:text-sm text-gray-500">
+                          Completed At
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {modalTasks.map((t) => (
+                        <tr
+                          key={t._id}
+                          className="border-t border-gray-100 dark:border-gray-800"
+                        >
+                          <td className="px-2 py-2 text-sm">{t.title}</td>
+                          <td className="px-2 py-2 text-sm capitalize">{t.status}</td>
+                          <td className="px-2 py-2 text-sm">{t.assignedTo?.name || "N/A"}</td>
+                          <td className="px-2 py-2 text-sm">{new Date(t.due).toLocaleDateString()}</td>
+                          <td className="px-2 py-2 text-sm">
+                            {t.completedAt ? new Date(t.completedAt).toLocaleDateString() : "-"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+
+                <div className="mt-4 flex justify-end">
+                  <button
+                    className="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

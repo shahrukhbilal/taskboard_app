@@ -16,14 +16,20 @@ const taskSchema = new mongoose.Schema(
     },
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "employee",
+      ref: "User",
       required: true,
     },
     due: {
       type: Date,
       required: true,
     },
+   completedAt: {
+  type: Date,
+  default: null,
+},
+
   },
+  
   { timestamps: true }
 );
 

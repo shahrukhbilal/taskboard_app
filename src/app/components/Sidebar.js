@@ -14,8 +14,8 @@ import Link from "next/link";
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const menuItems = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/" },
-    { name: "Tasks", icon: ClipboardList, path: "/tasks" },
-    { name: "Projects", icon: FolderKanban, path: "/projects" },
+    { name: "Tasks", icon: ClipboardList, path: "../api/admin/tasks" },
+   
     { name: "Calendar", icon: Calendar, path: "/Calendar" },
     { name: "Team", icon: Users, path: "/team" },
     { name: "Settings", icon: Settings, path: "/settings" },
