@@ -61,8 +61,12 @@ Live frontend and backend deployed on **Vercel**.
 )
 
 **Employees List Page:**  
-![Employees List Page Page](https://res.cloudinary.com/dvjkqt391/image/upload/v1770159826/Employees_List_Page_u4i4dc.png)
+![Employees List Page](https://res.cloudinary.com/dvjkqt391/image/upload/v1770159826/Employees_List_Page_u4i4dc.png)
+
+Employees Tasks Page:**  
+![Employees tasks Page](https://res.cloudinary.com/dvjkqt391/image/upload/v1770160058/Employees_Task_Page_yxqln1.png)
 ---
+
 
 ## 📦 Run Locally
 
