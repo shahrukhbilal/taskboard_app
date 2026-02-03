@@ -11,7 +11,7 @@
 A **modern taskboard / Kanban-style task management application** built with **Next.js** and **Tailwind CSS**.  
 Users can create boards, add tasks, move them between stages, and organize work visually — similar to Trello.  
 
-Live frontend deployed on **Vercel**. :contentReference[oaicite:1]{index=1}
+Live frontend and backend deployed on **Vercel**.
 
 ---
 
@@ -28,10 +28,7 @@ Live frontend deployed on **Vercel**. :contentReference[oaicite:1]{index=1}
 - User authentication & profiles  
 - Task deadlines & due dates  
 - Task filtering & search  
-- Notifications & reminders  
-
-
-*(Update the features above to exactly match what your app currently supports.)*
+- Notifications & reminder
 
 ---
 
@@ -39,28 +36,32 @@ Live frontend deployed on **Vercel**. :contentReference[oaicite:1]{index=1}
 
 **Frontend:** Next.js + Tailwind CSS  
 **Hosting:** Vercel  
-**State / Backend:** (If your app connects to an API — add it here)
-
+**State / Backend:** Node.js
 ---
 
 ## 🚀 Live Demo
 
-- **Frontend and Backend(Vercel):** https://taskboard-app-v8mj.vercel.app/ :contentReference[oaicite:2]{index=2}
-
-*(If you add a backend later, include its live link here.)*
+- **Frontend and Backend(Vercel):** https://taskboard-app-v8mj.vercel.app/ 
 
 ---
 
 ## 📸 Screenshots / Demo
 
-**Main Board / Dashboard:**  
-![Board Screenshot](Add_Link_Here)
+**Home Page:**  
+![Home Page](https://res.cloudinary.com/dvjkqt391/image/upload/v1770158668/Task_Board_Home_Page_fgx9mh.png)
 
-**Task Creation / Details:**  
-![Task Screenshot](Add_Link_Here)
+**Admin DashBoard:**  
+![Admin DashBoard](https://res.cloudinary.com/dvjkqt391/image/upload/v1770159015/Admin_DashBoard_xojb8m.png)
 
-*(Add GIFs for interactivity if possible — e.g., dragging tasks.)*
+**Assign New Task Form:**  
+![Assign New Task Form](https://res.cloudinary.com/dvjkqt391/image/upload/v1770159147/Assign_New_Task_Form_urpbjq.png)
 
+**Admin task review Page:**  
+![Admin task review Page](https://res.cloudinary.com/dvjkqt391/image/upload/v1770159671/Tasks_Review_Page_hqqij1.png
+)
+
+**Employees List Page:**  
+![Employees List Page Page](https://res.cloudinary.com/dvjkqt391/image/upload/v1770159826/Employees_List_Page_u4i4dc.png)
 ---
 
 ## 📦 Run Locally
