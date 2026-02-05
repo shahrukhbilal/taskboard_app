@@ -60,7 +60,8 @@ export async function POST(req) {
       path: "/",                             // cookie available on all routes
       maxAge: 7 * 24 * 60 * 60,             // 7 days in seconds
       sameSite: "strict",                    // CSRF protection
-      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      secure: process.env.NODE_ENV === "production" ? true : false
+
     });
 
     return response;

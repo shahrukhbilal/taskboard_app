@@ -39,6 +39,7 @@ export default function AdminDashBoard() {
         method: "GET",
         credentials: "include",
       });
+      console.log('res ponse from auth/check is :', res)
 
       if (!res.ok) {
         toast.error("Please login first!");
