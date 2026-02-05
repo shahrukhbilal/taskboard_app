@@ -1,36 +1,40 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect";
-import Task from "@/model/Task";
-import jwt from "jsonwebtoken";
+import dbConnect from "@/lib/dbConnect"; // MongoDB connection helper
+import Task from "@/model/Task"; // Task model
+import jwt from "jsonwebtoken"; // JWT verification
 
+// 📝 API to fetch tasks assigned to the logged-in user
 export async function GET(req) {
   try {
+    // 🗄️ Connect to MongoDB
     await dbConnect();
 
-    // 1   Extract token from cookies
+    // 1️⃣ Extract JWT token from cookies
     const token = req.cookies.get("task_token")?.value;
 
+    // ❌ If token is missing → Unauthorized
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // 2  Decode token → Get userId
+    // 2️⃣ Decode & verify token to get user info
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-console.log("Decoded Token:", decoded);
-
+    console.log("Decoded Token:", decoded);
 
     const userId = decoded.id;
-    console.log("UserId is :", userId)
-    // 3 Find tasks assigned to this employee
+
+    // 3️⃣ Fetch tasks assigned to this specific user only
     const tasks = await Task.find({ assignedTo: userId });
 
-
-
-    // 4 Return only extracted id's tasks
+    // 4️⃣ Return user's tasks
     return NextResponse.json(tasks, { status: 200 });
-
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+
+    // ❌ Catch-all for errors (invalid token, DB error, etc.)
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
   }
 }

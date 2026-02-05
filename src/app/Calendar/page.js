@@ -1,43 +1,51 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion"; // Animations
+import { ChevronLeft, ChevronRight } from "lucide-react"; // Navigation icons
 
 export default function CalendarPage() {
   const today = new Date();
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+
+  // 🧠 State
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth()); // 0-11
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [direction, setDirection] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(null); // Highlight selected date
+  const [direction, setDirection] = useState(0); // Used for slide animation
 
   const months = [
     "January","February","March","April","May","June",
     "July","August","September","October","November","December"
   ];
 
+  // Calculate first weekday of month and total days
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
   const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
 
+  // 🔄 Change month handler
   const changeMonth = (dir) => {
-    setDirection(dir);
+    setDirection(dir); // For slide animation
     if (dir === -1) {
+      // Previous month
       currentMonth === 0
         ? (setCurrentMonth(11), setCurrentYear(currentYear - 1))
         : setCurrentMonth(currentMonth - 1);
     } else {
+      // Next month
       currentMonth === 11
         ? (setCurrentMonth(0), setCurrentYear(currentYear + 1))
         : setCurrentMonth(currentMonth + 1);
     }
   };
 
+  // 🎨 Framer motion variants for sliding months
   const variants = {
     enter: (dir) => ({ x: dir > 0 ? 300 : -300, opacity: 0 }),
     center: { x: 0, opacity: 1 },
     exit: (dir) => ({ x: dir < 0 ? 300 : -300, opacity: 0 }),
   };
 
+  // 🎉 Stagger animation for weekday labels
   const stagger = {
     hidden: { opacity: 0, y: 10 },
     visible: (i = 1) => ({
@@ -60,11 +68,12 @@ export default function CalendarPage() {
         Calendar
       </motion.h1>
 
-      {/* Responsive Calendar Box */}
+      {/* Calendar Box */}
       <div className="w-full max-w-sm sm:max-w-xl mx-auto bg-white shadow-2xl rounded-2xl p-4 sm:p-6">
 
-        {/* Header */}
+        {/* Month Navigation */}
         <div className="flex items-center justify-between mb-4 sm:mb-6">
+          {/* Previous Month */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -74,6 +83,7 @@ export default function CalendarPage() {
             <ChevronLeft size={20} />
           </motion.button>
 
+          {/* Current Month & Year */}
           <motion.h2
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,6 +93,7 @@ export default function CalendarPage() {
             {months[currentMonth]} {currentYear}
           </motion.h2>
 
+          {/* Next Month */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -93,7 +104,7 @@ export default function CalendarPage() {
           </motion.button>
         </div>
 
-        {/* Weekdays */}
+        {/* Weekday Labels */}
         <div className="grid grid-cols-7 text-center font-semibold text-gray-600 mb-2 sm:mb-3 text-xs sm:text-base">
           {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map((day, i) => (
             <motion.div
@@ -111,7 +122,7 @@ export default function CalendarPage() {
         {/* Days Grid */}
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
-            key={currentMonth + "-" + currentYear}
+            key={currentMonth + "-" + currentYear} // triggers re-render for new month
             custom={direction}
             variants={variants}
             initial="enter"
@@ -120,10 +131,12 @@ export default function CalendarPage() {
             transition={{ duration: 0.4 }}
             className="grid grid-cols-7 gap-1 sm:gap-2"
           >
+            {/* Empty slots for first day offset */}
             {Array.from({ length: firstDay }).map((_, i) => (
               <div key={i}></div>
             ))}
 
+            {/* Calendar Days */}
             {Array.from({ length: totalDays }, (_, i) => i + 1).map(day => {
               const isToday =
                 day === today.getDate() &&
@@ -151,7 +164,7 @@ export default function CalendarPage() {
         </AnimatePresence>
       </div>
 
-      {/* Selected Date */}
+      {/* Selected Date Display */}
       {selectedDate && (
         <motion.p
           initial={{ opacity: 0, y: 10 }}
