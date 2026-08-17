@@ -56,7 +56,7 @@ export default function CalendarPage() {
   };
 
   return (
-    <div className="p-4 sm:p-8 bg-blue-100">
+    <div className="p-4 text-purple-700 sm:p-8 bg-blue-100">
 
       {/* Page Header */}
       <motion.h1

@@ -85,7 +85,7 @@ export default function RegisterPage() {
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm space-y-4"
       >
-        <h2 className="text-center text-xl font-bold">Register</h2>
+        <h2 className="text-center text-xl text-blue-600 font-bold">Register</h2>
 
         {/* 👤 Name input */}
         <input
@@ -93,7 +93,7 @@ export default function RegisterPage() {
           name="name"
           placeholder="Name"
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
           required
         />
 
@@ -103,7 +103,7 @@ export default function RegisterPage() {
           name="email"
           placeholder="Email"
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
           required
         />
 
@@ -113,7 +113,7 @@ export default function RegisterPage() {
           name="password"
           placeholder="Password"
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
           required
         />
 
@@ -121,7 +121,7 @@ export default function RegisterPage() {
         <select
           name="role"
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
         >
           <option value="employee">Employee</option>
           <option value="admin">Admin</option>
@@ -131,7 +131,7 @@ export default function RegisterPage() {
         <select
           name="techRole"
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
         >
           <option value="">Select Tech Role</option>
           <option value="frontend">frontend</option>
@@ -147,7 +147,7 @@ export default function RegisterPage() {
             name="adminSecret"
             placeholder="Enter Admin Secret Key"
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded text-black"
             required={showSecret}
           />
         )}

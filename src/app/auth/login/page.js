@@ -74,7 +74,7 @@ export default function LoginPage() {
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm space-y-4"
       >
-        <h2 className="text-center text-xl font-bold">Login</h2>
+        <h2 className="text-center text-xl font-bold text-blue-600">Login</h2>
 
         {/* 📧 Email input */}
         <input
@@ -82,7 +82,7 @@ export default function LoginPage() {
           name="email"
           placeholder="Email"
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
           required
         />
 
@@ -92,14 +92,14 @@ export default function LoginPage() {
           name="password"
           placeholder="Password"
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-black"
           required
         />
 
         {/* ✅ Submit button */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 text-black"
         >
           Login
         </button>

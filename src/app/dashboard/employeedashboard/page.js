@@ -170,7 +170,7 @@ export default function EmployeeDashboard() {
             </p>
 
             {/* Status Badge */}
-            <span className={`px-3 py-1 text-sm rounded-full font-semibold ${statusBadge(task.status)}`}>
+            <span className={`px-3 py-1 text-sm rounded-full font-semibold text-black ${statusBadge(task.status)}`}>
               {task.status}
             </span>
 
@@ -178,7 +178,7 @@ export default function EmployeeDashboard() {
             <select
               value={task.status}
               onChange={(e) => updateStatus(task._id, e.target.value)}
-              className="mt-5 w-full p-3 border rounded-xl bg-white/50 hover:bg-white cursor-pointer shadow-sm"
+              className="mt-5 w-full p-3 border rounded-xl bg-white/50 hover:bg-white cursor-pointer shadow-sm text-black"
             >
               <option value="todo">To Do</option>
               <option value="in-progress">In Progress</option>
@@ -186,7 +186,7 @@ export default function EmployeeDashboard() {
             </select>
 
             {/* Progress Bar */}
-            <div className="w-full bg-gray-300 rounded-full h-2 mt-5">
+            <div className="w-full bg-gray-300 rounded-full h-2 mt-5 text-black hover:text-black">
               <div
                 className={`h-2 rounded-full 
                   ${task.status === "completed"
